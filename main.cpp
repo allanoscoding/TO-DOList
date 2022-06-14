@@ -1,12 +1,16 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <limits>
+
 void add_task(std::map<int,std::string> &list){
     std::string task;
     std::cout << "Introduce the task: ";
-    std::cin >> task;
-    std::cout << "\n";
-    list.insert(std::pair<int,std::string>(list.size() + 1, task));
+    std::cin.ignore(std::numeric_limits<int>::max(),'\n');
+    std::getline(std::cin,task);
+    if(!task.empty()){
+        list.insert(std::pair<int,std::string>(list.size() + 1, task));
+    }
 }
 void remove_task(std::map<int,std::string> &list){
 
@@ -15,8 +19,10 @@ void write_into_file(std::map<int,std::string> &list){
 
 }
 void show_list(std::map<int,std::string> &list){
-    for(auto it=list.begin();it != list.end();++it){
-        std::cout << it->first << "." << it->second << std::endl;
+    if(list.size() != 0){
+        for(auto it=list.begin();it != list.end();++it){
+            std::cout << it->first << "." << it->second << std::endl;
+        }
     }
 }
 void menu(std::map<int,std::string> &list){
@@ -41,6 +47,7 @@ void menu(std::map<int,std::string> &list){
         break;
     case 4:
         show_list(list);
+        break;
     case 5:
         exit(1);
     default:
@@ -49,11 +56,13 @@ void menu(std::map<int,std::string> &list){
 }
 int main(){
     std::map<int,std::string> to_do_list;    
-    std::cout << "Welcome to your TODO list" << std::endl;
+    std::string aux;
+    std::getline(std::cin,aux);
+    std::cout << "Welcome to your TODO list" << "\n";
     if(to_do_list.size() == 0)
-        std::cout << "List empty, lucky you!" << std::endl;
+        std::cout << "List empty, lucky you!" << "\n";
     
-    std::cout << "What do you want to do?" << std::endl;
+    std::cout << "What do you want to do?" << "\n";
     while (1){
         menu(to_do_list);
     }
